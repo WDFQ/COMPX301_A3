@@ -1,5 +1,3 @@
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HexFormat;
@@ -7,15 +5,12 @@ import java.util.HexFormat;
 public class HexToByte {
     public static void main(String[] args) {
         try {
-            // Read from the input
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-
             // Store the input characters in groups of two
             ArrayList<Character> charList = new ArrayList<>();
 
             // Read the input char by char
             int code;
-            while ((code = reader.read()) != -1) {
+            while ((code = System.in.read()) != -1) {
                 // Convert the code into char
                 char character = (char)code;
 
@@ -28,8 +23,8 @@ public class HexToByte {
                     builder.append(charList.get(1));
                     byte[] bytes = HexFormat.of().parseHex(builder.toString());
 
-                    String asciiValue = new String(bytes, StandardCharsets.US_ASCII);
-                    System.out.print(asciiValue);
+                    System.out.write(bytes);
+                    System.out.flush();
 
                     charList.clear();
                 }
