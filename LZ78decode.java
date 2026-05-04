@@ -13,21 +13,36 @@ public class LZ78decode {
         try {
             // Add the first empty phrase into the dictionary
             dictionary.put(phraseCount, new String[2]);
+            phraseCount++;
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
             // Read a pair at a time and deconstruct it
-            String line;
-            while((line = reader.readLine()) != null){
-                // Increment phrase count only when there is a next line
-                phraseCount++;
+            int code;
+            StringBuilder line = new StringBuilder();
 
-                String[] pair = line.split(",");
+            while((code = reader.read()) != -1){
+                // Convert the character read into an actual character (number -> char)
+                char character = (char) code;
+
+                // Once you reach a comma, that's the end of the pair
+                if(character != ','){
+                    // Append the character to the line
+                    line.append(character);
+                }
+
+                // Split the pair by the space 
+                String pair[] = line.toString().split(" ");
 
                 // Add the pair into the dictionary and output the phrase
                 dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
                 System.out.print(buildPhrase(phraseCount));
+
+                // Increment phrase count only when there is a next line
+                phraseCount++;
             }
+            
+            
         } catch (Exception e) {
             System.err.println("An error has occurred: " + e.getMessage());
         }
