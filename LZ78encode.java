@@ -4,7 +4,7 @@ import java.io.InputStreamReader;
 public class LZ78encode {
     public static void main (String[] args){
         // create root node
-        int currentPhraseNum = 1;
+        int currentPhraseNum = 0;
         boolean isFirstPair = true;
         TrieNode root = new TrieNode(currentPhraseNum);
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));

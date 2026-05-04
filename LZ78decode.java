@@ -30,16 +30,32 @@ public class LZ78decode {
                     // Append the character to the line
                     line.append(character);
                 }
+                else{
+                    // // Split the pair by the space 
+                    // String pair[] = line.toString().trim().split(" ");
 
-                // Split the pair by the space 
-                String pair[] = line.toString().split(" ");
+                    // // Add the pair into the dictionary and output the phrase
+                    // dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
+                    // System.out.print(buildPhrase(phraseCount));
 
-                // Add the pair into the dictionary and output the phrase
-                dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
-                System.out.print(buildPhrase(phraseCount));
+                    // // Increment phrase count only when there is a next line
+                    // phraseCount++;
 
-                // Increment phrase count only when there is a next line
-                phraseCount++;
+                    String[] pair = line.toString().trim().split(" ");
+
+                    if (pair.length < 2) {
+                        // Mid-traversal leftover: just a phrase reference, no new character
+                        // Output the phrase it refers to (already in dictionary)
+                        System.out.print(buildPhrase(Integer.parseInt(pair[0])));
+                    } else {
+                        dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
+                        System.out.print(buildPhrase(phraseCount));
+                        phraseCount++;
+                    }
+
+                    line.setLength(0); // don't forget to reset
+                    
+                }
             }
             
             
@@ -56,12 +72,17 @@ public class LZ78decode {
 
         int currentPhraseNum = phraseNum;
         // Keep going until the current phrase is phrase 0, the empty phrase
-        while(phraseNum != 0){
+        while(currentPhraseNum != 0){
             // Add that phrase number to the stack
             stack.push(currentPhraseNum);
 
             // Check the current phrase num's longest phrase num pattern found in the dictionary
-            currentPhraseNum = Integer.parseInt(dictionary.get(currentPhraseNum)[0]);
+            String nextPhraseNum = dictionary.get(currentPhraseNum)[0];
+            if (nextPhraseNum == null){
+                break;
+            }
+            
+            currentPhraseNum = Integer.parseInt(nextPhraseNum);
         }
 
         // Pop everything from the stack
