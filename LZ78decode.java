@@ -31,31 +31,42 @@ public class LZ78decode {
                     line.append(character);
                 }
                 else{
-                    // // Split the pair by the space 
-                    // String pair[] = line.toString().trim().split(" ");
-
-                    // // Add the pair into the dictionary and output the phrase
-                    // dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
-                    // System.out.print(buildPhrase(phraseCount));
-
-                    // // Increment phrase count only when there is a next line
-                    // phraseCount++;
-
                     String[] pair = line.toString().trim().split(" ");
 
+                    // If there's a found phrase in the dictionary
                     if (pair.length < 2) {
-                        // Mid-traversal leftover: just a phrase reference, no new character
-                        // Output the phrase it refers to (already in dictionary)
                         System.out.print(buildPhrase(Integer.parseInt(pair[0])));
-                    } else {
+                    } 
+                    // Add the new phrase into the dictionary
+                    else {
                         dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
                         System.out.print(buildPhrase(phraseCount));
                         phraseCount++;
                     }
 
-                    line.setLength(0); // don't forget to reset
+                    // Reset the string
+                    line.setLength(0);
                     
                 }
+            }
+
+            // Process the last line
+            if(line.toString() != null){
+                String[] pair = line.toString().trim().split(" ");
+
+                // If there's a found phrase in the dictionary
+                if (pair.length < 2 || pair[1].isEmpty()) {
+                    System.out.print(buildPhrase(Integer.parseInt(pair[0])));
+                } 
+                // Add the new phrase into the dictionary
+                else {
+                    dictionary.put(phraseCount, new String[]{pair[0], pair[1]});
+                    System.out.print(buildPhrase(Integer.parseInt(pair[0])) + pair[1]);
+                    phraseCount++;
+                }
+
+                // Reset the string
+                line.setLength(0);
             }
             
             
