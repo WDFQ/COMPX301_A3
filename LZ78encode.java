@@ -4,9 +4,10 @@ import java.io.InputStreamReader;
 public class LZ78encode {
     public static void main (String[] args){
         // create root node
-        int currentPhraseNum = 1;
+        int currentPhraseNum = 0;
         boolean isFirstPair = true;
         TrieNode root = new TrieNode(currentPhraseNum);
+        currentPhraseNum++;
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
         try {
@@ -48,6 +49,9 @@ public class LZ78encode {
 
             // check if we were mid traversal when the loop ends
             if (currentNode != root) {
+                if (!isFirstPair) {
+                    System.out.print(",");
+                }
                 // just output the phrase number that it ends on
                 System.out.print(currentNode.phraseNum + " ");
             }
