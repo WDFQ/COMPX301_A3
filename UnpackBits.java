@@ -14,25 +14,34 @@ public class UnpackBits {
 
                 // get the number of bits are needed for the phrase number for the output pair  
                 int phraseBits = (int) Math.ceil(Math.log(phraseCount) / Math.log(2));
-
-                // check if theres anymore valid bits to make a pair
-                if ((bitPosition + phraseBits + 4) > (bytes.length * 8)){
+                
+                // check if there's enough bits for at least the phrase number
+                if (bitPosition + phraseBits > bytes.length * 8){
                     break;
                 }
                 
+                int phraseNum = readBits(bytes, phraseBits);  
 
-                int phraseNum  = readBits(bytes, phraseBits);  
+                // check if there's also a character nibble
+                if (bitPosition + 4 > bytes.length * 8) {
+                    // last pair with no character
+                    if (!isFirstPair) {
+                        System.out.print(",");
+                    }
+                    System.out.print(phraseNum);
+                    phraseCount++;
+                    break;
+                }
+
                 int charNibble = readBits(bytes, 4);  
                 String hexChar = Integer.toHexString(charNibble).toUpperCase();  
 
                 // ensure no comma in front of first pair
-                if (!isFirstPair) {
-                    System.out.print(",");   
-                }
+                if (!isFirstPair){
+                    System.out.print(",");
+                } 
                 isFirstPair = false; 
-
                 System.out.print(phraseNum + " " + hexChar);
-
                 phraseCount++;
             }
             
