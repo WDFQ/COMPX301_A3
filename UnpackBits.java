@@ -24,12 +24,12 @@ public class UnpackBits {
 
                 // check if there's also a character nibble
                 if (bitPosition + 4 > bytes.length * 8) {
-                    // last pair with no character
-                    if (!isFirstPair) {
-                        System.out.print(",");
-                    }
-                    System.out.print(phraseNum);
-                    phraseCount++;
+                    // remaining bits are just padding, only output phraseNum if it's non-zero
+                    // because a real trailing phrase-only pair would have been preceded by real data
+                    if (phraseNum != 0) {
+                        if (!isFirstPair) System.out.print(",");
+                        System.out.print(phraseNum);
+                    }   
                     break;
                 }
 
