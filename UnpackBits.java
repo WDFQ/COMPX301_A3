@@ -7,29 +7,42 @@ public class UnpackBits {
 
         try {
             byte[] bytes = System.in.readAllBytes();
+            
+            // read the flag byte at the end
+            boolean lastChar = (bytes[bytes.length - 1] == (byte)0xFF);
+
+            // make sure you don't read the flag byte
+            int bitLimit = (bytes.length - 1) * 8;
             int phraseCount = 1;
             
 
             while (true) { 
-
                 // get the number of bits are needed for the phrase number for the output pair  
                 int phraseBits = (int) Math.ceil(Math.log(phraseCount) / Math.log(2));
-                
-                // check if there's enough bits for at least the phrase number
-                if (bitPosition + phraseBits > bytes.length * 8){
+
+                // check if we hit the end of file
+                if (bitPosition + phraseBits> bitLimit) {
                     break;
                 }
-                
+
                 int phraseNum = readBits(bytes, phraseBits);  
 
-                // check if there's also a character nibble
-                if (bitPosition + 4 > bytes.length * 8) {
-                    // remaining bits are just padding, only output phraseNum if it's non-zero
-                    // because a real trailing phrase-only pair would have been preceded by real data
-                    if (phraseNum != 0) {
-                        if (!isFirstPair) System.out.print(",");
-                        System.out.print(phraseNum);
-                    }   
+                // check if this is last pair
+                if (bitPosition + 4 > bitLimit) {
+                    if (!isFirstPair) {
+                        System.out.print(",");
+                    }
+                    // last pair with character
+                    if (lastChar){
+                        int charNibble = readBits(bytes, 4);
+                        String hexChar = Integer.toHexString(charNibble).toUpperCase();  
+                        System.out.print(phraseNum + " " + hexChar);
+                    }
+                    // last pair with no character
+                    else{
+                        System.out.print(phraseNum + " ");
+                    }
+                    phraseCount++;
                     break;
                 }
 
