@@ -51,7 +51,10 @@ public class PackBits {
                     phraseCount++;
                     line.setLength(0);
                 }
-            }  
+            }
+
+            // Keep track of whether or not there was a trailing character
+            boolean lastChar = false;
 
             // Process the last line
             if(line.length() > 0){
@@ -66,11 +69,13 @@ public class PackBits {
                 if (pair.length > 1 && !pair[1].isEmpty()){
                     int pairChar = Integer.parseInt(pair[1],  16);
                     writeBits(pairChar, 4);
+                    lastChar = true;
                 }
 
                 // Increment phrase count and reset line stringbuilder
                 phraseCount++;
                 line.setLength(0);
+
             }
             
             // Flush the remaining bits that is padded with zeroes to the right
@@ -81,6 +86,14 @@ public class PackBits {
 
                 // Output the remaining byte
                 out.write(buffer);
+            }
+
+            // Write the flagging bit
+            if (lastChar){
+                writeBits(0xFF, 8);
+            }
+            else{
+                writeBits(0x00, 8);
             }
 
             // Flush everything
