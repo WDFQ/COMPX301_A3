@@ -77,24 +77,18 @@ public class PackBits {
                 line.setLength(0);
 
             }
-            
-            // Flush the remaining bits that is padded with zeroes to the right
+
+            int markerByte = 0x00;
+
             if (bitsInBuffer > 0){
-                // Shift the buffer to the left until there are 8 bits and ensure we mask it to only pass through the rightmost 8 bits
-                buffer = buffer << 8 - bitsInBuffer;
-                buffer = buffer & 0xFF;
-
-                // Output the remaining byte
+                buffer <<= (8 - bitsInBuffer);
+                buffer &= 0xFF;
                 out.write(buffer);
+
+                markerByte = 1 << (8 - bitsInBuffer - 1);
             }
 
-            // Write the flagging bit
-            if (lastChar){
-                writeBits(0xFF, 8);
-            }
-            else{
-                writeBits(0x00, 8);
-            }
+            out.write(markerByte);
 
             // Flush everything
             out.flush();

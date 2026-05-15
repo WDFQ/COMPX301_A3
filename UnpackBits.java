@@ -8,52 +8,38 @@ public class UnpackBits {
         try {
             byte[] bytes = System.in.readAllBytes();
             
-            // read the flag byte at the end
-            boolean lastChar = (bytes[bytes.length - 1] == (byte)0xFF);
+            // get the flag byte
+            byte lastByte = bytes[bytes.length - 1];
+
+            // get the index of where the '1' is in the final byte
+            int paddingIndex = Integer.numberOfTrailingZeros(lastByte & 0xFF);
 
             // make sure you don't read the flag byte
-            int bitLimit = (bytes.length - 1) * 8;
+            int bitLimit = (bytes.length - 1) * 8 - paddingIndex;
             int phraseCount = 1;
             
-
-            while (true) { 
-                // get the number of bits are needed for the phrase number for the output pair  
+            while (true) {
                 int phraseBits = (int) Math.ceil(Math.log(phraseCount) / Math.log(2));
-
-                // check if we hit the end of file
-                if (bitPosition + phraseBits> bitLimit) {
-                    break;
-                }
-
-                int phraseNum = readBits(bytes, phraseBits);  
-
-                // check if this is last pair
+                
+                // not enough bits for phrase number
+                if (bitPosition + phraseBits > bitLimit) break;
+                
+                int phraseNum = readBits(bytes, phraseBits);
+                
+                // check if there's a char nibble
                 if (bitPosition + 4 > bitLimit) {
-                    if (!isFirstPair) {
-                        System.out.print(",");
-                    }
-                    // last pair with character
-                    if (lastChar){
-                        int charNibble = readBits(bytes, 4);
-                        String hexChar = Integer.toHexString(charNibble).toUpperCase();  
-                        System.out.print(phraseNum + " " + hexChar);
-                    }
-                    // last pair with no character
-                    else{
-                        System.out.print(phraseNum + " ");
-                    }
-                    phraseCount++;
+                    // last pair has no character
+                    if (!isFirstPair) System.out.print(",");
+                    System.out.print(phraseNum + " ");
                     break;
                 }
-
-                int charNibble = readBits(bytes, 4);  
-                String hexChar = Integer.toHexString(charNibble).toUpperCase();  
-
-                // ensure no comma in front of first pair
+                
+                int charNibble = readBits(bytes, 4);
+                String hexChar = Integer.toHexString(charNibble).toUpperCase();
                 if (!isFirstPair){
-                    System.out.print(",");
+                    System.out.print(",");    
                 } 
-                isFirstPair = false; 
+                isFirstPair = false;
                 System.out.print(phraseNum + " " + hexChar);
                 phraseCount++;
             }
@@ -61,8 +47,6 @@ public class UnpackBits {
         } catch (Exception e) {
             System.err.println("Error has occurred: " + e.getMessage());
         }
-
-        
     }
 
     /**
