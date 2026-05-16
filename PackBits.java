@@ -53,8 +53,6 @@ public class PackBits {
                 }
             }
 
-            // Keep track of whether or not there was a trailing character
-            boolean lastChar = false;
 
             // Process the last line
             if(line.length() > 0){
@@ -69,7 +67,6 @@ public class PackBits {
                 if (pair.length > 1 && !pair[1].isEmpty()){
                     int pairChar = Integer.parseInt(pair[1],  16);
                     writeBits(pairChar, 4);
-                    lastChar = true;
                 }
 
                 // Increment phrase count and reset line stringbuilder
