@@ -1,6 +1,13 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+/**
+ * Encodes hex into LZ78 phrase number and mismatched character pairs.
+ *
+ * @author Jeff Jia 1641408
+ * @lastModified 16/05/2026
+ */
+
 public class LZ78encode {
     public static void main (String[] args){
         // create root node

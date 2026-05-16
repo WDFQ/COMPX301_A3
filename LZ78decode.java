@@ -4,6 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * Decodes LZ78 pairs to Hex.
+ *
+ * @author Alexis Manosca 1644633
+ * @lastModified 16/05/2026
+ */
+
 public class LZ78decode {
     // Create a new dictionary to store all the phrases and store the phrase count
     static Map<Integer, String[]> dictionary = new HashMap<>();

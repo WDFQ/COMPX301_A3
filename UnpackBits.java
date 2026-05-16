@@ -1,3 +1,12 @@
+/**
+ * Unpacks bits from PackBits into LZ78 pairs.
+ *
+ * @author Jeff Jia 1641408
+ * @lastModified 16/05/2026
+ * 
+ * AI was used for understanding readbits and getBit especially logical shift operations.
+ */
+
 public class UnpackBits {
 
     static int bitPosition = 0;

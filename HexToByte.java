@@ -1,6 +1,13 @@
 import java.util.ArrayList;
 import java.util.HexFormat;
 
+/**
+ * Converts Hex into bytes.
+ *
+ * @author Alexis Manosca 1644633
+ * @lastModified 16/05/2026
+ */
+
 public class HexToByte {
     public static void main(String[] args) {
         try {

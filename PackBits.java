@@ -2,6 +2,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+/**
+ * Converts LZ78 pairs into packed bits.
+ *
+ * @author Alexis Manosca 1644633
+ * @lastModified 16/05/2026
+ * 
+ * I used AI to help me figure out how to write out the bits in a buffer correctly using logical operations.
+ */
+
 public class PackBits {
     final static int BASE = 2;
 

@@ -1,3 +1,10 @@
+/**
+ * Converts byte into hex.
+ *
+ * @author Jeff Jia 1641408
+ * @lastModified 16/05/2026
+ */
+
 public class ByteToHex {
     public static void main(String[] args) {
         try {
